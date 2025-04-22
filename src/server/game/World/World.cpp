@@ -73,6 +73,7 @@
 #include "PoolMgr.h"
 #include "Realm.h"
 #include "ScriptMgr.h"
+#include "ServerMailMgr.h"
 #include "SkillDiscovery.h"
 #include "SkillExtraItems.h"
 #include "SmartAI.h"
@@ -1166,9 +1167,9 @@ void World::LoadConfigSettings(bool reload)
 
     // Wintergrasp
     _int_configs[CONFIG_WINTERGRASP_ENABLE]              = sConfigMgr->GetOption<int32>("Wintergrasp.Enable", 1);
-    _int_configs[CONFIG_WINTERGRASP_PLR_MAX]             = sConfigMgr->GetOption<int32>("Wintergrasp.PlayerMax", 100);
+    _int_configs[CONFIG_WINTERGRASP_PLR_MAX]             = sConfigMgr->GetOption<int32>("Wintergrasp.PlayerMax", 120);
     _int_configs[CONFIG_WINTERGRASP_PLR_MIN]             = sConfigMgr->GetOption<int32>("Wintergrasp.PlayerMin", 0);
-    _int_configs[CONFIG_WINTERGRASP_PLR_MIN_LVL]         = sConfigMgr->GetOption<int32>("Wintergrasp.PlayerMinLvl", 77);
+    _int_configs[CONFIG_WINTERGRASP_PLR_MIN_LVL]         = sConfigMgr->GetOption<int32>("Wintergrasp.PlayerMinLvl", 75);
     _int_configs[CONFIG_WINTERGRASP_BATTLETIME]          = sConfigMgr->GetOption<int32>("Wintergrasp.BattleTimer", 30);
     _int_configs[CONFIG_WINTERGRASP_NOBATTLETIME]        = sConfigMgr->GetOption<int32>("Wintergrasp.NoBattleTimer", 150);
     _int_configs[CONFIG_WINTERGRASP_RESTART_AFTER_CRASH] = sConfigMgr->GetOption<int32>("Wintergrasp.CrashRestartTimer", 10);
@@ -1308,6 +1309,7 @@ void World::SetInitialWorldSettings()
                         !MapMgr::ExistMapAndVMap(530, 10349.6f, -6357.29f) ||
                         !MapMgr::ExistMapAndVMap(530, -3961.64f, -13931.2f))))
         {
+            LOG_ERROR("server.loading", "Failed to find map files for starting areas");
             exit(1);
         }
     }
@@ -1667,8 +1669,8 @@ void World::SetInitialWorldSettings()
     LOG_INFO("server.loading", "Loading Player Level Dependent Mail Rewards...");
     sObjectMgr->LoadMailLevelRewards();
 
-    LOG_INFO("server.loading", "Load Mail Server Template...");
-    sObjectMgr->LoadMailServerTemplates();
+    LOG_INFO("server.loading", "Load Mail Server definitions...");
+    sServerMailMgr->LoadMailServerTemplates();
 
     // Loot tables
     LoadLootTables();

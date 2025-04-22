@@ -2476,6 +2476,9 @@ void Player::GiveLevel(uint8 level)
     if (level == oldLevel)
         return;
 
+    if (!sScriptMgr->OnPlayerCanGiveLevel(this, level))
+        return;
+
     if (Guild* guild = GetGuild())
         guild->UpdateMemberData(this, GUILD_MEMBER_DATA_LEVEL, level);
 
@@ -4532,7 +4535,7 @@ void Player::ResurrectPlayer(float restore_percent, bool applySickness)
     // trigger update zone for alive state zone updates
     uint32 newzone, newarea;
     GetZoneAndAreaId(newzone, newarea);
-    UpdateZone(newzone, newarea);
+    UpdateZone(newzone, newarea, true);
     sOutdoorPvPMgr->HandlePlayerResurrects(this, newzone);
 
     if (Battleground* bg = GetBattleground())
