@@ -4229,7 +4229,7 @@ void AddSC_item_spell_scripts()
     RegisterSpellScript(spell_item_summon_argent_knight);
     RegisterSpellScript(spell_item_instant_statue);
     // 23074 Arcanite Dragonling
-    //RegisterSpellScriptWithArgs(spell_item_trigger_spell, "spell_item_arcanite_dragonling", SPELL_ARCANITE_DRAGONLING);
+    RegisterSpellScriptWithArgs(spell_item_trigger_spell, "spell_item_arcanite_dragonling", SPELL_ARCANITE_DRAGONLING);
     // 23133 Gnomish Battle Chicken
     RegisterSpellScriptWithArgs(spell_item_trigger_spell, "spell_item_gnomish_battle_chicken", SPELL_BATTLE_CHICKEN);
     // 23076 Mechanical Dragonling
