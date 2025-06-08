@@ -31,12 +31,9 @@
 
 enum MageSpells
 {
-    // Ours
     SPELL_MAGE_BURNOUT_TRIGGER                   = 44450,
     SPELL_MAGE_IMPROVED_BLIZZARD_CHILLED         = 12486,
     SPELL_MAGE_COMBUSTION                        = 11129,
-
-    // Theirs
     SPELL_MAGE_COLD_SNAP                         = 11958,
     SPELL_MAGE_FROST_WARDING_R1                  = 11189,
     SPELL_MAGE_FROST_WARDING_TRIGGERED           = 57776,
