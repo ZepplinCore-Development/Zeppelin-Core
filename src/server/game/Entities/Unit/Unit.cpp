@@ -7877,10 +7877,6 @@ bool Unit::HandleDummyAuraProc(Unit* victim, uint32 damage, AuraEffect* triggere
                             if (!caster || !victim->IsFriendlyTo(caster))
                                 return false;
 
-                            auto* caster = triggeredByAura->GetBase()->GetCaster();
-                            if (!caster || !victim->IsFriendlyTo(caster))
-                                return false;
-
                             // 2% of base mana
                             basepoints0 = int32(CalculatePct(victim->GetCreateMana(), 2));
                             victim->CastCustomSpell(victim, 20268, &basepoints0, nullptr, nullptr, true, 0, triggeredByAura);
