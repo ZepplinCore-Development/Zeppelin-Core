@@ -1,5 +1,5 @@
 ARG UBUNTU_VERSION=22.04 # lts
-ARG TZ=Etc/UTC
+ARG TZ=Australia/Perth
 
 # This target lays out the general directory skeleton for AzerothCore,
 # This target isn't intended to be directly used
