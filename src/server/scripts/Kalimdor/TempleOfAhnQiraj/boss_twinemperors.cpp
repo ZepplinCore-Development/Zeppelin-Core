@@ -258,7 +258,7 @@ struct boss_twinemperorsAI : public BossAI
             {
                 if (Creature* twin = GetTwin())
                 {
-                    if (me->IsWithinDist(twin, 60.f))
+                    if (me->IsWithinDist(twin, 10.f))
                         DoCast(twin, SPELL_HEAL_BROTHER, true);
                 }
 

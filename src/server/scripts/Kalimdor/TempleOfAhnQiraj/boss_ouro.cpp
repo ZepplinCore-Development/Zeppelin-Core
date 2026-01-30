@@ -131,7 +131,10 @@ struct boss_ouro : public BossAI
                 })
                 .Schedule(20s, [this](TaskContext context)
                     {
-                        DoCastSelf(SPELL_SUMMON_OURO_MOUNDS, true);
+                        if(_summonedMounds < 10){
+                            DoCastSelf(SPELL_SUMMON_OURO_MOUNDS, true);
+                            _summonedMounds++;
+                        }
                         context.Repeat();
                     });
         }
@@ -266,6 +269,7 @@ struct boss_ouro : public BossAI
         _submergeMelee = 0;
         _submerged = false;
         _enraged = false;
+        _summonedMounds = 0;
     }
 
     void EnterEvadeMode(EvadeReason /*why*/) override
@@ -298,6 +302,7 @@ protected:
     bool _enraged;
     uint8 _submergeMelee;
     bool _submerged;
+    uint8 _summonedMounds;
 
     bool IsPlayerWithinMeleeRange() const
     {

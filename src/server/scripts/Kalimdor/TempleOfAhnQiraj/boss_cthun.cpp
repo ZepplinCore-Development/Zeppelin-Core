@@ -97,6 +97,11 @@ enum Misc
     NPC_EXIT_TRIGGER                            = 15800
 };
 
+#define LESSTHAN6                           6
+#define LESSTHAN11                          12
+#define LESSTHAN21                          18
+#define GIANTSPAWNCAP                       5
+
 enum Yells
 {
     //Text emote
@@ -146,6 +151,8 @@ struct boss_eye_of_cthun : public BossAI
         ClockWise = false;
 
         _eyeTentacleCounter = 0;
+        _TentacleSpawnOffset = 0;
+        _playerCount = 0;
 
         //Reset flags
         me->RemoveUnitFlag(UNIT_FLAG_NOT_SELECTABLE | UNIT_FLAG_NON_ATTACKABLE);
@@ -167,6 +174,17 @@ struct boss_eye_of_cthun : public BossAI
     void JustEngagedWith(Unit* who) override
     {
         ScheduleTask(true);
+        _playerCount = instance->instance->GetPlayersCountExceptGMs();
+        if(_playerCount <6){
+            _TentacleSpawnOffset = LESSTHAN6;
+        }
+        else if (_playerCount <11){
+            _TentacleSpawnOffset = LESSTHAN11;
+        }
+        else if (_playerCount <21){
+            _TentacleSpawnOffset = LESSTHAN21;
+        }
+        _eyeTentacleCounter = _TentacleSpawnOffset;
         BossAI::JustEngagedWith(who);
         _beamTarget = who->GetGUID();
     }
@@ -188,8 +206,10 @@ struct boss_eye_of_cthun : public BossAI
             me->SummonCreatureGroup(_eyeTentacleCounter);
             _eyeTentacleCounter++;
 
-            if (_eyeTentacleCounter >= MAX_TENTACLE_GROUPS)
-                _eyeTentacleCounter = 0;
+            if (_eyeTentacleCounter >= MAX_TENTACLE_GROUPS + _TentacleSpawnOffset)
+            {
+                _eyeTentacleCounter = _TentacleSpawnOffset;
+            }
         }
     }
 
@@ -341,6 +361,8 @@ private:
     bool ClockWise;
 
     uint32 _eyeTentacleCounter;
+    uint32 _TentacleSpawnOffset;
+    uint32 _playerCount;
     ObjectGuid _beamTarget;
 };
 
@@ -355,6 +377,7 @@ struct boss_cthun : public BossAI
     {
         //One random wisper every 90 - 300 seconds
         WisperTimer = 90000;
+        _giant_tentacle_cap = 0;
 
         _fleshTentaclesKilled = 0;
 
@@ -420,11 +443,19 @@ struct boss_cthun : public BossAI
                 eye->AI()->DoAction(ACTION_SPAWN_EYE_TENTACLES);
 
             context.Repeat();
-        }).Schedule(8s, [this](TaskContext context)
+        }).Schedule(24s, [this](TaskContext context)
         {
             if (Unit* target = SelectTarget(SelectTargetMethod::Random, 0, NotInStomachSelector()))
-                if (Creature* spawned = me->SummonCreature(NPC_GIANT_CLAW_TENTACLE, *target, TEMPSUMMON_CORPSE_TIMED_DESPAWN, 5000))
-                    spawned->AI()->AttackStart(target);
+            {
+                //Spawn claw tentacle on the random target
+                if(_giant_tentacle_cap < GIANTSPAWNCAP){
+                    if (Creature* spawned = me->SummonCreature(NPC_GIANT_CLAW_TENTACLE, *target, TEMPSUMMON_CORPSE_TIMED_DESPAWN, 5000))
+                    {
+                        spawned->AI()->AttackStart(target);
+                    }
+                    _giant_tentacle_cap++;
+                }
+            }
 
             context.Repeat(1min);
         }).Schedule(38s, [this](TaskContext context)
@@ -511,6 +542,7 @@ struct boss_cthun : public BossAI
     private:
         //Out of combat whisper timer
         uint32 WisperTimer;
+        uint8 _giant_tentacle_cap;
 
         //Body Phase
         uint8 _fleshTentaclesKilled;
