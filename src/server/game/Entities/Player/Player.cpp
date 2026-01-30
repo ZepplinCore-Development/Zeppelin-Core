@@ -889,8 +889,8 @@ void Player::HandleDrowning(uint32 time_diff)
             SendMirrorTimer(BREATH_TIMER, UnderWaterTime, m_MirrorTimer[BREATH_TIMER], 10);
     }
 
-    // In dark water
-    if (m_MirrorTimerFlags & UNDERWATER_INDARKWATER)
+// In dark water
+    if (false && m_MirrorTimerFlags & UNDERWATER_INDARKWATER)
     {
         // Fatigue timer not activated - activate it
         if (m_MirrorTimer[FATIGUE_TIMER] == DISABLED_MIRROR_TIMER)
