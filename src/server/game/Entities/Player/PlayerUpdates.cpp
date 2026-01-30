@@ -772,16 +772,28 @@ bool Player::UpdateGatherSkill(uint32 SkillId, uint32 SkillValue,
               "UpdateGatherSkill(SkillId {} SkillLevel {} RedLevel {})",
               SkillId, SkillValue, RedLevel);
 
-    uint32 gathering_skill_gain =
-        sWorld->getIntConfig(CONFIG_SKILL_GAIN_GATHERING);
-    sScriptMgr->OnPlayerUpdateGatheringSkill(this, SkillId, SkillValue, RedLevel + 100, RedLevel + 50, RedLevel + 25, gathering_skill_gain);
+    uint32 gathering_skill_gain = sWorld->getIntConfig(CONFIG_SKILL_GAIN_GATHERING);
+    uint32 specialLockingBusiness =sWorld->getIntConfig(CONFIG_SKILL_GAIN_CRAFTING);
+
+    if(SkillId == SKILL_LOCKPICKING){
+        sScriptMgr->OnPlayerUpdateGatheringSkill(this, SkillId, SkillValue, RedLevel + 100, RedLevel + 50, RedLevel + 25, specialLockingBusiness);
+    }
+    else {
+        sScriptMgr->OnPlayerUpdateGatheringSkill(this, SkillId, SkillValue, RedLevel + 100, RedLevel + 50, RedLevel + 25, gathering_skill_gain);
+    }
 
     // For skinning and Mining chance decrease with level. 1-74 - no decrease,
     // 75-149 - 2 times, 225-299 - 8 times
     switch (SkillId)
     {
-    case SKILL_HERBALISM:
     case SKILL_LOCKPICKING:
+        return UpdateSkillPro(SkillId,
+                        SkillGainChance(SkillValue, RedLevel + 100,
+                        RedLevel + 50, RedLevel + 25) *
+                        Multiplicator,
+                        specialLockingBusiness);
+        break;
+    case SKILL_HERBALISM:
     case SKILL_JEWELCRAFTING:
     case SKILL_INSCRIPTION:
         return UpdateSkillPro(SkillId,
