@@ -8887,34 +8887,8 @@ bool Unit::HandleDummyAuraProc(Unit* victim, uint32 damage, AuraEffect* triggere
                 }
                 break;
             }
-        case SPELLFAMILY_POTION:
-            {
-                // alchemist's stone
-                if (dummySpell->Id == 17619)
-                {
-                    if (procSpell->SpellFamilyName == SPELLFAMILY_POTION)
-                    {
-                        for (uint8 i = 0; i < MAX_SPELL_EFFECTS; i++)
-                        {
-                            if (procSpell->Effects[i].Effect == SPELL_EFFECT_HEAL)
-                            {
-                                triggered_spell_id = 21399;
-                            }
-                            else if (procSpell->Effects[i].Effect == SPELL_EFFECT_ENERGIZE)
-                            {
-                                triggered_spell_id = 21400;
-                            }
-                            else
-                                continue;
-
-                            basepoints0 = int32(CalculateSpellDamage(this, procSpell, i) * 0.4f);
-                            CastCustomSpell(this, triggered_spell_id, &basepoints0, nullptr, nullptr, true, nullptr, triggeredByAura);
-                        }
-                        return true;
-                    }
-                }
-                break;
-            }
+        // F-027: Removed SPELLFAMILY_POTION case - Alchemist's Stone (17619) now uses
+        // ADD_PCT_MODIFIER aura instead of proc handler. Triggered spells 21399/21400 deprecated.
         case SPELLFAMILY_PET:
             {
                 switch (dummySpell->SpellIconID)

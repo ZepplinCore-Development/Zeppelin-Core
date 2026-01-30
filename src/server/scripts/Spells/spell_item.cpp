@@ -4076,36 +4076,8 @@ class spell_item_eye_of_grillok_aura : public AuraScript
     }
 };
 
-enum FelManaPotion
-{
-    SPELL_ALCHEMIST_STONE          = 17619,
-    SPELL_ALCHEMIST_STONE_ENERGIZE = 21400
-};
-
-class spell_item_fel_mana_potion : public AuraScript
-{
-    PrepareAuraScript(spell_item_fel_mana_potion)
-
-    bool Validate(SpellInfo const* /*spellInfo*/) override
-    {
-        return ValidateSpellInfo({ SPELL_ALCHEMIST_STONE, SPELL_ALCHEMIST_STONE_ENERGIZE });
-    }
-
-    void OnPeriodic(AuraEffect const* /*aurEff*/)
-    {
-        if (Unit* caster = GetCaster())
-            if (caster->HasAura(SPELL_ALCHEMIST_STONE))
-            {
-                uint32 val = GetSpellInfo()->Effects[EFFECT_0].BasePoints * 0.4f;
-                caster->CastCustomSpell(SPELL_ALCHEMIST_STONE_ENERGIZE, SPELLVALUE_BASE_POINT0, val, caster, true);
-            }
-    }
-
-    void Register() override
-    {
-        OnEffectPeriodic += AuraEffectPeriodicFn(spell_item_fel_mana_potion::OnPeriodic, EFFECT_0, SPELL_AURA_PERIODIC_ENERGIZE);
-    }
-};
+// F-027: Removed spell_item_fel_mana_potion - Alchemist's Stone (17619) now uses
+// ADD_PCT_MODIFIER aura. Fel Mana spell (38929) tagged with mana potion flag.
 
 // 32578 - Gor'drek's Ointment
 enum DreksOintment
@@ -4415,7 +4387,7 @@ void AddSC_item_spell_scripts()
     RegisterSpellScript(spell_item_venomhide_feed);
     RegisterSpellScript(spell_item_scroll_of_retribution);
     RegisterSpellAndAuraScriptPair(spell_item_eye_of_grillok, spell_item_eye_of_grillok_aura);
-    RegisterSpellScript(spell_item_fel_mana_potion);
+    // F-027: Removed spell_item_fel_mana_potion registration
     RegisterSpellScript(spell_item_gor_dreks_ointment);
     RegisterSpellScript(spell_item_skyguard_blasting_charges);
     RegisterSpellScript(spell_item_luffa);
