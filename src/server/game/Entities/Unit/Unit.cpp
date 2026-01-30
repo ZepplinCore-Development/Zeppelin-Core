@@ -14680,7 +14680,7 @@ void Unit::setDeathState(DeathState s, bool despawn)
         CombatStop();
         GetThreatMgr().ClearAllThreat();
         getHostileRefMgr().deleteReferences();
-        ClearComboPointHolders();                           // any combo points pointed to unit lost at it death
+        //ClearComboPointHolders();                           // prevents combo point loss on  death
 
         if (IsNonMeleeSpellCast(false))
             InterruptNonMeleeSpells(false);
@@ -17094,9 +17094,13 @@ void Unit::AddComboPoints(Unit* target, int8 count)
         {
             m_comboTarget->RemoveComboPointHolder(this);
         }
-
         m_comboTarget = target;
-        m_comboPoints = count;
+        if(m_comboPoints + count > 5){ // handles transitions where 5 combo points are present
+            m_comboPoints = 5;
+        }
+        else{
+            m_comboPoints = std::max<int8>(std::min<int8>(m_comboPoints + count, 5), 0); // handles normal transitions
+        }
         target->AddComboPointHolder(this);
     }
     else
