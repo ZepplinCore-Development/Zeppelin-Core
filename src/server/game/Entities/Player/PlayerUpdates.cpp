@@ -794,6 +794,7 @@ bool Player::UpdateGatherSkill(uint32 SkillId, uint32 SkillValue,
                         specialLockingBusiness);
         break;
     case SKILL_HERBALISM:
+    case SKILL_ENGINEERING:
     case SKILL_JEWELCRAFTING:
     case SKILL_INSCRIPTION:
         return UpdateSkillPro(SkillId,
