@@ -7029,7 +7029,12 @@ void Player::ApplyItemObtainSpells(Item* item, bool apply)
         if (apply)
         {
             if (!HasAura(spellId))
-                CastSpell(this, spellId, true, item);
+            {
+                // Check if a stronger aura from the same spell group is already active
+                SpellInfo const* spellInfo = sSpellMgr->GetSpellInfo(spellId);
+                if (spellInfo && !spellInfo->IsStrongerAuraActive(this, this))
+                    CastSpell(this, spellId, true, item);
+            }
         }
         else
             RemoveAurasDueToSpell(spellId);
