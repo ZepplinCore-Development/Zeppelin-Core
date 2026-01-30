@@ -83,14 +83,16 @@ struct boss_nexusprince_shaffar : public BossAI
         _JustEngagedWith();
         Talk(SAY_AGGRO);
         summons.DoZoneInCombat();
-        scheduler.Schedule(10s, [this](TaskContext context)
+        // reduce frequency to from 10s to 20s
+        scheduler.Schedule(20s, [this](TaskContext context)
         {
             if (!urand(0, 3))
             {
                 Talk(SAY_SUMMON);
             }
             DoCastSelf(SPELL_ETHEREAL_BEACON, true);
-            context.Repeat(10s);
+            context.Repeat(20s);
+            // reduce frequency to from 10s to 20s
         }).Schedule(4s, [this](TaskContext context)
         {
             DoCastVictim(RAND(SPELL_FROSTBOLT, SPELL_FIREBALL));

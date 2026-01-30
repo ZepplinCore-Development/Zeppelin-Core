@@ -50,7 +50,7 @@ float const ROOM_PULL_RANGE    = 70.0f;
 float const ROOM_ENTERANCE     = -50.0f;
 float const ROOM_EXIT          = -145.0f;
 
-constexpr uint8 MAX_VOID_BLAST = 5;
+constexpr uint8 MAX_VOID_BLAST = 1; // normally 5, but should ideally scale to the number of players in the dungeon.
 
 struct boss_pandemonius : public BossAI
 {

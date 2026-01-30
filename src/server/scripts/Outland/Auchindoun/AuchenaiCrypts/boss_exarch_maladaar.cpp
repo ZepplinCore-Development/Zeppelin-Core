@@ -46,7 +46,7 @@ enum Spells
     SPELL_FROSTSHOCK            = 37332,
     SPELL_CURSE_OF_AGONY        = 37334,
     SPELL_MORTAL_STRIKE         = 37335,
-    SPELL_FREEZING_TRAP         = 37368,
+    SPELL_EXPLOSIVE_TRAP         = 43444,
     SPELL_HAMMER_OF_JUSTICE     = 37369,
     SPELL_PLAGUE_STRIKE         = 58839
 };
@@ -184,7 +184,7 @@ struct npc_stolen_soul : public ScriptedAI
                 case CLASS_HUNTER:
                     _scheduler.Schedule(0ms, [this](TaskContext context)
                     {
-                        DoCastVictim(SPELL_FREEZING_TRAP);
+                        DoCastVictim(SPELL_EXPLOSIVE_TRAP);
                         context.Repeat(20s);
                     });
                     break;
