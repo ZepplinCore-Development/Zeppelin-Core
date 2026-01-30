@@ -404,10 +404,11 @@ enum ItemSubclassArmor
 
 enum ItemSubclassReagent
 {
-    ITEM_SUBCLASS_REAGENT                       = 0
+    ITEM_SUBCLASS_REAGENT                       = 0,
+    ITEM_SUBCLASS_TOOL                          = 1
 };
 
-#define MAX_ITEM_SUBCLASS_REAGENT                 1
+#define MAX_ITEM_SUBCLASS_REAGENT                 2
 
 enum ItemSubclassProjectile
 {
