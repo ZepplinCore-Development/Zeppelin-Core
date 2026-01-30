@@ -2534,7 +2534,7 @@ bool SpellInfo::_IsPositiveEffect(uint8 effIndex, bool deep) const
     // Special case: effects which determine positivity of whole spell
     for (uint8 i = 0; i < MAX_SPELL_EFFECTS; ++i)
     {
-        if (Effects[i].IsAura() && Effects[i].ApplyAuraName == SPELL_AURA_MOD_STEALTH)
+        if (Effects[i].IsAura() && (Effects[i].ApplyAuraName == SPELL_AURA_MOD_STEALTH || Effects[i].ApplyAuraName == SPELL_AURA_MANA_SHIELD))
             return true;
     }
 
